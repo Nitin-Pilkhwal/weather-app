@@ -19,7 +19,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
-      String cityName = 'Mumbai';
+      String cityName = 'Noida';
       // String countryName = 'London';
       final res = await http.get(
         Uri.parse(
@@ -86,7 +86,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
           final currentWeatherData = data['list'][0];
 
-          final currentTemp = currentWeatherData['main']['temp'];
+          final currentTemp =
+              (currentWeatherData['main']['temp'] - 273).toStringAsFixed(2);
           final currentSky = currentWeatherData['weather'][0]['main'];
           final currentPressure = currentWeatherData['main']['pressure'];
           final currentWindSpeed = currentWeatherData['wind']['speed'];
@@ -117,7 +118,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           child: Column(
                             children: [
                               Text(
-                                '$currentTemp K',
+                                '$currentTemp °C',
                                 style: const TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
@@ -162,8 +163,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       final hourlyForecast = data['list'][index + 1];
                       final hourlySky =
                           data['list'][index + 1]['weather'][0]['main'];
-                      final hourlyTemp =
-                          hourlyForecast['main']['temp'].toString();
+                      final hourlyTemp = (hourlyForecast['main']['temp'] - 273)
+                              .toStringAsFixed(2) +
+                          '°C';
                       final time = DateTime.parse(hourlyForecast['dt_txt']);
                       return HourlyForecastItem(
                         time: DateFormat.j().format(time),
